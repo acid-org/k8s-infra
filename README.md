@@ -27,7 +27,7 @@ terraform init
 
 3. Apply the configuration. Terraform installs cert-manager automatically
    and then deploys Rancher. Set a Rancher admin password and optionally
-   specify a hostname for the Rancher ingress (defaults to `localhost`).
+   specify a hostname for the Rancher ingress (defaults to `rancher.local`).
    The `cluster_name` and `agent_count` variables can be used to
    customize the k3d cluster name and number of agent nodes:
 
@@ -39,17 +39,17 @@ terraform apply \
   -var="agent_count=<number-of-agents>"
 ```
 
-4. After the apply completes, Terraform starts a port-forward from the
-   `rancher` service to `https://localhost:8443`. Merge the kubeconfig:
+4. After the apply completes, merge the kubeconfig so `kubectl` can reach
+   the new cluster:
 
 ```bash
 k3d kubeconfig merge rancher-test --switch
 ```
 
-5. Access the Rancher UI at `https://localhost:8443` and log in with the password you provided.
+5. Add an entry for `rancher.local` pointing to `127.0.0.1` in your
+   `/etc/hosts` file and access the Rancher UI at `https://rancher.local`.
 
-6. When you are done, destroy the environment. The port-forward started by
-   Terraform is terminated automatically:
+6. When you are done, destroy the environment:
 
 ```bash
 terraform destroy

@@ -16,11 +16,6 @@ module "rancher" {
   depends_on             = [module.cert_manager]
 }
 
-module "rancher_port_forward" {
-  source     = "./modules/rancher_port_forward"
-  depends_on = [module.rancher]
-}
-
 module "flux" {
   source                     = "./modules/flux"
   flux_git_repository_url    = var.flux_git_repository_url
