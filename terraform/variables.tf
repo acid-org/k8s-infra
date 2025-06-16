@@ -15,6 +15,13 @@ variable "flux_git_repository_branch" {
   default     = "main"
 }
 
+variable "flux_github_token" {
+  description = "GitHub token used for Flux bootstrapping"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 variable "rancher_hostname" {
   description = "Hostname used for the Rancher ingress"
   type        = string
