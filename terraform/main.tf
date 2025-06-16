@@ -63,7 +63,7 @@ resource "null_resource" "flux_install" {
   }
 
   provisioner "local-exec" {
-    command = "flux install --namespace flux-system --url=${var.flux_git_repository_url} --branch=${var.flux_git_repository_branch}"
+    command = "flux bootstrap git --url=${var.flux_git_repository_url} --branch=${var.flux_git_repository_branch} --path=."
   }
 }
 
