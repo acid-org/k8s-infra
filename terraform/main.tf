@@ -13,6 +13,21 @@ resource "null_resource" "k3d_cluster" {
   }
 }
 
+resource "helm_release" "cert_manager" {
+  name             = "cert-manager"
+  repository       = "https://charts.jetstack.io"
+  chart            = "cert-manager"
+  namespace        = "cert-manager"
+  create_namespace = true
+
+  set {
+    name  = "installCRDs"
+    value = true
+  }
+
+  depends_on = [null_resource.k3d_cluster]
+}
+
 resource "helm_release" "rancher" {
   name             = "rancher"
   repository       = "https://releases.rancher.com/server-charts/stable"
@@ -31,7 +46,7 @@ resource "helm_release" "rancher" {
     type  = "string"
   }
 
-  depends_on = [null_resource.k3d_cluster]
+  depends_on = [helm_release.cert_manager]
 }
 
 # Install FluxCD once Rancher is ready

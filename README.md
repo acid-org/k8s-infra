@@ -22,7 +22,8 @@ cd terraform
 terraform init
 ```
 
-3. Apply the configuration, setting a Rancher admin password:
+3. Apply the configuration. Terraform installs cert-manager automatically
+   and then deploys Rancher. Set a Rancher admin password:
 
 ```bash
 terraform apply -var="rancher_admin_password=<choose-a-password>"
