@@ -2,6 +2,8 @@
 
 This project creates a local Kubernetes cluster using [k3d](https://k3d.io/) and installs Rancher via Terraform. The cluster is intended for local testing and evaluation.
 
+The Terraform configuration is structured using reusable modules located under `terraform/modules` to keep the codebase organized.
+
 ## Prerequisites
 
 - [Terraform](https://www.terraform.io/) >= 1.1
@@ -25,12 +27,16 @@ terraform init
 
 3. Apply the configuration. Terraform installs cert-manager automatically
    and then deploys Rancher. Set a Rancher admin password and optionally
-   specify a hostname for the Rancher ingress (defaults to `localhost`):
+   specify a hostname for the Rancher ingress (defaults to `localhost`).
+   The `cluster_name` and `agent_count` variables can be used to
+   customize the k3d cluster name and number of agent nodes:
 
 ```bash
 terraform apply \
   -var="rancher_admin_password=<choose-a-password>" \
-  -var="rancher_hostname=<your-hostname>"
+  -var="rancher_hostname=<your-hostname>" \
+  -var="cluster_name=<cluster-name>" \
+  -var="agent_count=<number-of-agents>"
 ```
 
 4. After the apply completes, Terraform starts a port-forward from the
