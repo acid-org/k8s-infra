@@ -39,3 +39,9 @@ variable "agent_count" {
   type        = number
   default     = 2
 }
+
+variable "storage_path" {
+  description = "Host path used to persist k3s data"
+  type        = string
+  default     = "/media/acid/windows"
+}

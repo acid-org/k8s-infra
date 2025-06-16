@@ -5,3 +5,8 @@ variable "cluster_name" {
 variable "agent_count" {
   type = number
 }
+
+variable "storage_path" {
+  type        = string
+  description = "Host path used to persist k3s data"
+}
