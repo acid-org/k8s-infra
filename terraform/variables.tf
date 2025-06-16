@@ -25,7 +25,7 @@ variable "flux_github_token" {
 variable "rancher_hostname" {
   description = "Hostname used for the Rancher ingress"
   type        = string
-  default     = "localhost"
+  default     = "rancher.local"
 }
 
 variable "cluster_name" {

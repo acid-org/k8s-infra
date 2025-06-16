@@ -5,7 +5,7 @@ resource "null_resource" "cluster" {
   }
 
   provisioner "local-exec" {
-    command     = "k3d cluster create ${self.triggers.cluster_name} --agents ${self.triggers.agent_count}"
+    command     = "k3d cluster create ${self.triggers.cluster_name} --agents ${self.triggers.agent_count} -p \"80:80@loadbalancer\" -p \"443:443@loadbalancer\""
     interpreter = ["bash", "-c"]
   }
 
