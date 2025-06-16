@@ -14,3 +14,9 @@ variable "flux_git_repository_branch" {
   type        = string
   default     = "main"
 }
+
+variable "rancher_hostname" {
+  description = "Hostname used for the Rancher ingress"
+  type        = string
+  default     = "localhost"
+}

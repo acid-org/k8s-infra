@@ -36,6 +36,11 @@ resource "helm_release" "rancher" {
   create_namespace = true
 
   set {
+    name  = "hostname"
+    value = var.rancher_hostname
+  }
+
+  set {
     name  = "replicas"
     value = 1
   }

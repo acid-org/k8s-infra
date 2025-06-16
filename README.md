@@ -23,10 +23,13 @@ terraform init
 ```
 
 3. Apply the configuration. Terraform installs cert-manager automatically
-   and then deploys Rancher. Set a Rancher admin password:
+   and then deploys Rancher. Set a Rancher admin password and optionally
+   specify a hostname for the Rancher ingress (defaults to `localhost`):
 
 ```bash
-terraform apply -var="rancher_admin_password=<choose-a-password>"
+terraform apply \
+  -var="rancher_admin_password=<choose-a-password>" \
+  -var="rancher_hostname=<your-hostname>"
 ```
 
 4. After the apply completes, merge the kubeconfig:
