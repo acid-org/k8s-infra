@@ -27,3 +27,15 @@ variable "rancher_hostname" {
   type        = string
   default     = "localhost"
 }
+
+variable "cluster_name" {
+  description = "Name of the k3d cluster"
+  type        = string
+  default     = "rancher-test"
+}
+
+variable "agent_count" {
+  description = "Number of k3d agent nodes"
+  type        = number
+  default     = 2
+}
