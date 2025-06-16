@@ -2,22 +2,22 @@
 # This requires k3d to be installed on the machine running Terraform
 resource "null_resource" "k3d_cluster" {
   provisioner "local-exec" {
-    command = "k3d cluster create rancher-test --agents 2"
+    command     = "k3d cluster create rancher-test --agents 2"
     interpreter = ["bash", "-c"]
   }
 
   provisioner "local-exec" {
-    when    = destroy
-    command = "k3d cluster delete rancher-test"
+    when        = destroy
+    command     = "k3d cluster delete rancher-test"
     interpreter = ["bash", "-c"]
   }
 }
 
 resource "helm_release" "rancher" {
-  name       = "rancher"
-  repository = "https://releases.rancher.com/server-charts/stable"
-  chart      = "rancher"
-  namespace  = "cattle-system"
+  name             = "rancher"
+  repository       = "https://releases.rancher.com/server-charts/stable"
+  chart            = "rancher"
+  namespace        = "cattle-system"
   create_namespace = true
 
   set {
@@ -25,9 +25,10 @@ resource "helm_release" "rancher" {
     value = 1
   }
 
-  set {
+  set_sensitive {
     name  = "bootstrapPassword"
     value = var.rancher_admin_password
+    type  = "string"
   }
 
   depends_on = [null_resource.k3d_cluster]
