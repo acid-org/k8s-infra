@@ -32,3 +32,17 @@ resource "helm_release" "rancher" {
 
   depends_on = [null_resource.k3d_cluster]
 }
+
+# Install FluxCD once Rancher is ready
+resource "null_resource" "flux_install" {
+  depends_on = [helm_release.rancher]
+
+  triggers = {
+    always_run = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "flux install --namespace flux-system --url=${var.flux_git_repository_url} --branch=${var.flux_git_repository_branch}"
+  }
+}
+
