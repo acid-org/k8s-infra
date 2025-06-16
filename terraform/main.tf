@@ -54,6 +54,22 @@ resource "helm_release" "rancher" {
   depends_on = [helm_release.cert_manager]
 }
 
+# Port-forward the Rancher service locally
+resource "null_resource" "rancher_port_forward" {
+  depends_on = [helm_release.rancher]
+
+  provisioner "local-exec" {
+    command     = "nohup kubectl -n cattle-system port-forward svc/rancher 8443:443 >/tmp/rancher-port-forward.log 2>&1 & echo $! > /tmp/rancher-port-forward.pid"
+    interpreter = ["bash", "-c"]
+  }
+
+  provisioner "local-exec" {
+    when        = destroy
+    command     = "if [ -f /tmp/rancher-port-forward.pid ]; then kill $(cat /tmp/rancher-port-forward.pid); rm /tmp/rancher-port-forward.pid; fi"
+    interpreter = ["bash", "-c"]
+  }
+}
+
 # Install FluxCD once Rancher is ready
 resource "null_resource" "flux_install" {
   depends_on = [helm_release.rancher]
