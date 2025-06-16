@@ -63,7 +63,10 @@ resource "null_resource" "flux_install" {
   }
 
   provisioner "local-exec" {
-    command = "flux bootstrap git --url=${var.flux_git_repository_url} --branch=${var.flux_git_repository_branch} --path=."
+    command = "mkdir -p /tmp/fluxcd && flux bootstrap git --url=${var.flux_git_repository_url} --branch=${var.flux_git_repository_branch} --path=."
+    environment = {
+      TMPDIR = "/tmp/fluxcd"
+    }
   }
 }
 
