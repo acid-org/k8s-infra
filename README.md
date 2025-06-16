@@ -49,3 +49,4 @@ terraform destroy
 3. Commit Kubernetes manifests to the `k8s-workloads` repository and Flux will sync them into the cluster.
 
 Flux manages workload deployment entirely from the watched Git repository.
+

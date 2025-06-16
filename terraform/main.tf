@@ -45,3 +45,4 @@ resource "null_resource" "flux_install" {
     command = "flux install --namespace flux-system --url=${var.flux_git_repository_url} --branch=${var.flux_git_repository_branch}"
   }
 }
+
