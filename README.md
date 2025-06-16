@@ -33,7 +33,8 @@ terraform apply \
   -var="rancher_hostname=<your-hostname>"
 ```
 
-4. After the apply completes, merge the kubeconfig:
+4. After the apply completes, Terraform starts a port-forward from the
+   `rancher` service to `https://localhost:8443`. Merge the kubeconfig:
 
 ```bash
 k3d kubeconfig merge rancher-test --switch
@@ -41,7 +42,8 @@ k3d kubeconfig merge rancher-test --switch
 
 5. Access the Rancher UI at `https://localhost:8443` and log in with the password you provided.
 
-6. When you are done, destroy the environment:
+6. When you are done, destroy the environment. The port-forward started by
+   Terraform is terminated automatically:
 
 ```bash
 terraform destroy
