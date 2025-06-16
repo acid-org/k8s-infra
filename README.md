@@ -7,6 +7,7 @@ This project creates a local Kubernetes cluster using [k3d](https://k3d.io/) and
 - [Terraform](https://www.terraform.io/) >= 1.1
 - [k3d](https://k3d.io/) installed on your machine
 - `kubectl` available in your `$PATH`
+- [Flux CLI](https://fluxcd.io/docs/installation/) available in your `$PATH`
 
 ## Usage
 
@@ -48,6 +49,7 @@ terraform destroy
 
 ## Bootstrapping Flux
 
+1. Install the Flux CLI following the [official instructions](https://fluxcd.io/docs/installation/).
 1. Set the variables `flux_git_repository_url` and `flux_git_repository_branch` in `terraform.tfvars` or via the CLI. Point them at your `k8s-workloads` repository and branch.
 2. Run `terraform apply` after the Rancher installation completes. A `null_resource` will invoke `flux install` to configure Flux to watch the specified repository.
 3. Commit Kubernetes manifests to the `k8s-workloads` repository and Flux will sync them into the cluster.
