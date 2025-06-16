@@ -29,14 +29,17 @@ terraform init
    and then deploys Rancher. Set a Rancher admin password and optionally
    specify a hostname for the Rancher ingress (defaults to `rancher.local`).
    The `cluster_name` and `agent_count` variables can be used to
-   customize the k3d cluster name and number of agent nodes:
+   customize the k3d cluster name and number of agent nodes. The
+   `storage_path` variable specifies a host directory used to persist
+   cluster data (defaults to `/media/acid/windows`):
 
 ```bash
 terraform apply \
   -var="rancher_admin_password=<choose-a-password>" \
   -var="rancher_hostname=<your-hostname>" \
   -var="cluster_name=<cluster-name>" \
-  -var="agent_count=<number-of-agents>"
+  -var="agent_count=<number-of-agents>" \
+  -var="storage_path=<host-storage-directory>"
 ```
 
 4. After the apply completes, merge the kubeconfig so `kubectl` can reach
