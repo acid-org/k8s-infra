@@ -1,18 +1,28 @@
-resource "null_resource" "cluster" {
-  triggers = {
-    cluster_name = var.cluster_name
-    agent_count  = var.agent_count
-    storage_path = var.storage_path
+resource "k3d_cluster" "cluster" {
+  name          = var.cluster_name
+  servers_count = 1
+  agents_count  = var.agent_count
+
+  ports {
+    host_port      = 80
+    container_port = 80
+    node_filters   = ["loadbalancer"]
   }
 
-  provisioner "local-exec" {
-    command     = "k3d cluster create ${self.triggers.cluster_name} --agents ${self.triggers.agent_count} -p \"80:80@loadbalancer\" -p \"443:443@loadbalancer\" --volume ${self.triggers.storage_path}:/var/lib/rancher/k3s@server:0"
-    interpreter = ["bash", "-c"]
+  ports {
+    host_port      = 443
+    container_port = 443
+    node_filters   = ["loadbalancer"]
   }
 
-  provisioner "local-exec" {
-    when        = destroy
-    command     = "k3d cluster delete ${self.triggers.cluster_name}"
-    interpreter = ["bash", "-c"]
+  volumes {
+    source       = var.storage_path
+    destination  = "/var/lib/rancher/k3s"
+    node_filters = ["server:0"]
+  }
+
+  kube_config {
+    update_default = true
+    switch_context = true
   }
 }
