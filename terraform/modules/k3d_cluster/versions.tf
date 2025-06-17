@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     k3d = {
-      source  = "nikhilsbhat/k3d"
-      version = ">= 0.0.2"
+      source  = "pvotal-tech/k3d"
+      version = ">= 0.0.7"
     }
   }
 }
