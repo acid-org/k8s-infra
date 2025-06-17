@@ -1,6 +1,6 @@
 # Local Kubernetes Cluster with Rancher
 
-This project creates a local Kubernetes cluster using [k3d](https://k3d.io/) and installs Rancher via Terraform. The cluster is intended for local testing and evaluation.
+This project creates a local Kubernetes cluster using [k3d](https://k3d.io/) and installs Rancher via Terraform. The cluster is managed through the [official k3d provider](https://registry.terraform.io/providers/nikhilsbhat/k3d/latest/docs) and is intended for local testing and evaluation.
 
 The Terraform configuration is structured using reusable modules located under `terraform/modules` to keep the codebase organized.
 

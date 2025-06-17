@@ -9,6 +9,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = ">= 2.16.1"
     }
+    k3d = {
+      source  = "nikhilsbhat/k3d"
+      version = ">= 0.0.2"
+    }
   }
 }
 
@@ -21,3 +25,5 @@ provider "helm" {
 provider "kubernetes" {
   config_path = "~/.kube/config"
 }
+
+provider "k3d" {}
