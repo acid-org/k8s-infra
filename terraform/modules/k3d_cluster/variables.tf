@@ -1,10 +1,10 @@
 variable "cluster_name" {
-  type = string
+  type    = string
   default = "local-k3s-cluster"
 }
 
 variable "agent_count" {
-  type = number
+  type    = number
   default = 2
 }
 

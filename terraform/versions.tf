@@ -10,8 +10,8 @@ terraform {
       version = ">= 2.16.1"
     }
     k3d = {
-      source  = "nikhilsbhat/k3d"
-      version = ">= 0.0.2"
+      source  = "pvotal-tech/k3d"
+      version = ">= 0.0.7"
     }
   }
 }
