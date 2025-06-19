@@ -1,28 +1,41 @@
-resource "k3d_cluster" "cluster" {
-  name    = var.cluster_name
-  servers = 1
-  agents  = var.agent_count
-
-  port {
-    host_port      = 80
-    container_port = 80
-    node_filters   = ["loadbalancer"]
+// modules/k3d_cluster/main.tf
+resource "null_resource" "cluster" {
+  triggers = {
+    cluster_name = var.cluster_name
+    agent_count  = var.agent_count
+    storage_path = var.storage_path
   }
 
-  port {
-    host_port      = 443
-    container_port = 443
-    node_filters   = ["loadbalancer"]
+  provisioner "local-exec" {
+    command = <<-EOT
+      set -eux
+
+      # ensure host storage dir exists and is empty
+      mkdir -p "${self.triggers.storage_path}"
+      rm -rf "${self.triggers.storage_path}"/*
+
+      # delete any existing k3d cluster
+      if k3d cluster list --no-headers | awk '{print $1}' | grep -x "${self.triggers.cluster_name}"; then
+        k3d cluster delete "${self.triggers.cluster_name}"
+      fi
+
+      # create new cluster: 1 control-plane + N workers, with persistent storage
+      k3d cluster create "${self.triggers.cluster_name}" \
+        --servers 1 \
+        --agents "${self.triggers.agent_count}" \
+        -p "80:80@loadbalancer" \
+        -p "443:443@loadbalancer" \
+        --volume "${self.triggers.storage_path}:/var/lib/rancher/k3s@server:0" \
+        --volume "${self.triggers.storage_path}:/var/lib/rancher/k3s@agent:*" \
+        --timeout 10m \
+        --wait
+    EOT
+    interpreter = ["bash", "-c"]
   }
 
-  volume {
-    source       = var.storage_path
-    destination  = "/var/lib/rancher/k3s"
-    node_filters = ["server:0"]
-  }
-
-  kubeconfig {
-    update_default_kubeconfig = true
-    switch_current_context    = true
+  provisioner "local-exec" {
+    when        = destroy
+    command     = "k3d cluster delete ${self.triggers.cluster_name}"
+    interpreter = ["bash", "-c"]
   }
 }
