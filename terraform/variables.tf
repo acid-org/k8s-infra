@@ -37,7 +37,7 @@ variable "cluster_name" {
 variable "agent_count" {
   description = "Number of k3d agent nodes"
   type        = number
-  default     = 2
+  default     = 1
 }
 
 variable "storage_path" {

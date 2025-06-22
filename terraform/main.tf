@@ -1,7 +1,7 @@
 module "k3d_cluster" {
   source       = "./modules/k3d_cluster"
   cluster_name = var.cluster_name
-  agent_count  = 1
+  agent_count  = var.agent_count
   storage_path = var.storage_path
 }
 
